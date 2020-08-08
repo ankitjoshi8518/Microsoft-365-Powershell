@@ -20,4 +20,31 @@ Set-MsolUserLicense -ObjectId $userobjectid -RemoveLicenses $skuid
 Remove-MsolUser -UserPrincipalName $upn
 ----------------
 
+# Enable/Disable MFA for a user ------------
+$username=Read-Host "Enter Username"
+$user=Get-MsolUser -SearchString $username
+
+if ($user -ne $null)
+    
+    {
+        
+        $action=Read-Host " Select one of the choice: '1' to Enable MFA  '0' to Disable MFA "
+        $st = New-Object -TypeName Microsoft.Online.Administration.StrongAuthenticationRequirement
+        $st.RelyingParty = "*"
+        $st.State = "Enabled"
+        if ($action -eq 1)
+            {
+                $sta = @($st)
+            }
+        else {  $sta=@() }
+
+        # Change the following UserPrincipalName to the user you wish to change state
+        Set-MsolUser -ObjectId $user.objectid -StrongAuthenticationRequirements $sta
+        Write-Host "Successfully completed"
+
+    }
+
+else { Write-Host "User not found. Please check the username and try again" -ErrorAction Stop }
+
+
 
