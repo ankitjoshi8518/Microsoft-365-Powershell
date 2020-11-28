@@ -24,7 +24,7 @@ Remove-MsolUser -UserPrincipalName $upn
 $username=Read-Host "Enter Username"
 $user=Get-MsolUser -SearchString $username
 
-if ($user -ne $null)
+if ($null -ne $user)
     
     {
         
